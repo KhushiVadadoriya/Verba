@@ -101,7 +101,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 type="button"
                 onClick={onGetStarted}
                 style={{
-                  fontFamily: 'var(--font-serif)',
+                  fontFamily: 'var(--font-roman), var(--font-serif)',
                   fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
                   color: 'var(--color-secondary)',
                   padding: 'var(--space-4) var(--space-8)',
@@ -155,7 +155,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           }}
         >
           <div className="container">
-            <div className="text-center mb-12">
+            <div className="text-center" style={{ marginBottom: 'var(--space-10)' }}>
               <Badge variant="ai" icon={<Sparkles size={13} />}>
                 Reading Intelligence Platform
               </Badge>
@@ -167,15 +167,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </h2>
             </div>
 
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: 'var(--space-8)',
-              }}
-            >
+            <div className="features-grid">
               {/* Feature 1: Mood-Based Discovery */}
-              <Card variant="surface" className="card-interactive">
+              <Card
+                variant="surface"
+                className="card-interactive"
+                style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 'var(--space-8)' }}
+              >
                 <div
                   style={{
                     width: '48px',
@@ -187,6 +185,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: 'var(--space-4)',
+                    flexShrink: 0,
                   }}
                 >
                   <Compass size={24} strokeWidth={2} />
@@ -194,7 +193,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <h3 className="heading-3 mb-2" style={{ fontSize: 'var(--text-xl)' }}>
                   Mood & Intent Discovery
                 </h3>
-                <p className="text-sm text-muted" style={{ lineHeight: 1.6 }}>
+                <p
+                  className="text-sm text-muted"
+                  style={{
+                    fontFamily: 'var(--font-roman), var(--font-serif)',
+                    fontSize: '0.975rem',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
                   Search using how you feel: <em>“I need something comforting”</em> or{' '}
                   <em>“An inspiring biography for a quiet evening”</em>. Discover books that match
                   your emotional state.
@@ -202,7 +209,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </Card>
 
               {/* Feature 2: Emotional Reflections & Reading DNA */}
-              <Card variant="surface" className="card-interactive">
+              <Card
+                variant="surface"
+                className="card-interactive"
+                style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 'var(--space-8)' }}
+              >
                 <div
                   style={{
                     width: '48px',
@@ -214,6 +225,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: 'var(--space-4)',
+                    flexShrink: 0,
                   }}
                 >
                   <Heart size={24} strokeWidth={2} />
@@ -221,14 +233,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <h3 className="heading-3 mb-2" style={{ fontSize: 'var(--text-xl)' }}>
                   Emotional Reflections
                 </h3>
-                <p className="text-sm text-muted" style={{ lineHeight: 1.6 }}>
+                <p
+                  className="text-sm text-muted"
+                  style={{
+                    fontFamily: 'var(--font-roman), var(--font-serif)',
+                    fontSize: '0.975rem',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
                   Capture the emotional resonance of every completed book. Your reflections
                   continuously refine your personal Reading DNA and future recommendations.
                 </p>
               </Card>
 
               {/* Feature 3: Unified Bookshelf & Import */}
-              <Card variant="surface" className="card-interactive">
+              <Card
+                variant="surface"
+                className="card-interactive"
+                style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 'var(--space-8)' }}
+              >
                 <div
                   style={{
                     width: '48px',
@@ -240,6 +264,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginBottom: 'var(--space-4)',
+                    flexShrink: 0,
                   }}
                 >
                   <Library size={24} strokeWidth={2} />
@@ -247,8 +272,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <h3 className="heading-3 mb-2" style={{ fontSize: 'var(--text-xl)' }}>
                   Unified Library Import
                 </h3>
-                <p className="text-sm text-muted" style={{ lineHeight: 1.6 }}>
-                  Seamlessly import your history from Goodreads or StoryGraph CSV exports. Never
+                <p
+                  className="text-sm text-muted"
+                  style={{
+                    fontFamily: 'var(--font-roman), var(--font-serif)',
+                    fontSize: '0.975rem',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Seamlessly import your history from Goodreads, StoryGraph, Hardcover, or Notion. Never
                   lose your reading milestones or start your library from scratch.
                 </p>
               </Card>
@@ -264,7 +297,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             textAlign: 'center',
           }}
         >
-          <div className="container-reading">
+          <div className="quote-container">
             <Feather
               size={28}
               strokeWidth={1.5}
@@ -274,25 +307,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 opacity: 0.85,
               }}
             />
-            <blockquote
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 'clamp(1.25rem, 3vw, 1.65rem)',
-                fontStyle: 'italic',
-                color: 'var(--color-text-primary)',
-                lineHeight: 1.5,
-                marginBottom: 'var(--space-3)',
-              }}
-            >
+            <blockquote className="quote-text">
               “A book must be the axe for the frozen sea within us.”
             </blockquote>
             <cite
               style={{
+                display: 'block',
                 fontFamily: 'var(--font-sans)',
-                fontSize: 'var(--text-sm)',
+                fontSize: 'var(--text-xs)',
                 color: 'var(--color-text-secondary)',
                 fontStyle: 'normal',
-                letterSpacing: '0.05em',
+                letterSpacing: '0.08em',
                 textTransform: 'uppercase',
               }}
             >
@@ -320,18 +345,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             gap: 'var(--space-4)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-            <BookMarked size={20} style={{ color: 'var(--color-primary)' }} />
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 'var(--weight-semibold)',
-                fontSize: 'var(--text-lg)',
-                color: 'var(--color-text-primary)',
-              }}
-            >
-              Verba
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+            <BookMarked size={18} style={{ color: 'var(--color-primary)', flexShrink: 0 }} />
             <span className="text-xs text-muted">
               © {new Date().getFullYear()} Verba Reading Intelligence.
             </span>

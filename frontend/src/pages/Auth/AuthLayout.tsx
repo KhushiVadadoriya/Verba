@@ -55,19 +55,8 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
       {/* Centered Brand Header from Figma Mockup */}
       <div style={{ textAlign: 'center', marginBottom: 'var(--space-6)' }}>
         {/* Official Brand Logo */}
-        <div style={{ display: 'inline-block', marginBottom: 'var(--space-2)' }}>
-          <img
-            src={verbaLogo}
-            alt="Verba Logo"
-            style={{
-              height: '48px',
-              width: 'auto',
-              maxWidth: '48px',
-              objectFit: 'contain',
-              display: 'block',
-              margin: '0 auto',
-            }}
-          />
+        <div className="auth-logo-icon">
+          <img src={verbaLogo} alt="Verba Logo" />
         </div>
 
         {/* Wordmark */}

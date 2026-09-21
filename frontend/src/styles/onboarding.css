@@ -1,0 +1,468 @@
+/**
+ * Verba Onboarding Stylesheet
+ * Faithfully recreating the Figma mockup aesthetic:
+ * - Editorial serif typography
+ * - Soft muted rose/mauve card surfaces
+ * - 5-dot circular progress indicator with berry-plum active state
+ * - Clean checkbox and integration controls
+ */
+
+.onboarding-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-primary);
+  padding: var(--space-8) var(--space-4);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.onboarding-container {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  animation: onboardingFadeIn 250ms var(--ease-default);
+}
+
+@keyframes onboardingFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Screen 0: Welcome Step
+   -------------------------------------------------------------------------- */
+.welcome-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 460px;
+  width: 100%;
+}
+
+.welcome-heading {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  margin: 0;
+  text-align: center;
+}
+
+.welcome-wordmark {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--color-primary);
+  display: inline;
+  vertical-align: baseline;
+  font-size: 1.02em;
+  letter-spacing: -0.01em;
+}
+
+.welcome-subtitle {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.welcome-start-btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: #ffffff;
+  background-color: var(--color-secondary);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 12px 36px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(159, 62, 118, 0.25);
+  transition: all 180ms var(--ease-default);
+  margin-top: var(--space-4);
+}
+
+.welcome-start-btn:hover {
+  background-color: var(--color-secondary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(159, 62, 118, 0.35);
+}
+
+.welcome-start-btn:active {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Progress Dots (Steps 1 to 5)
+   -------------------------------------------------------------------------- */
+.onboarding-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 var(--space-6) 0;
+}
+
+.onboarding-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-primary);
+  background-color: transparent;
+  transition: all 200ms ease;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.onboarding-dot.active {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Question Heading
+   -------------------------------------------------------------------------- */
+.onboarding-question {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.35rem, 3.2vw, 1.7rem);
+  font-weight: 400;
+  color: #1e1d24;
+  text-align: center;
+  line-height: 1.35;
+  margin: 0 0 var(--space-6) 0;
+  max-width: 480px;
+}
+
+/* --------------------------------------------------------------------------
+   Option Cards (Steps 1, 3, 4)
+   -------------------------------------------------------------------------- */
+.onboarding-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.onboarding-option-card {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 20px;
+  background-color: #ebd7e4;
+  border: 1.5px solid transparent;
+  border-radius: 3px;
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 1.15rem;
+  color: #1e1d24;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  transition: all 150ms var(--ease-default);
+  box-sizing: border-box;
+}
+
+.onboarding-option-card:hover {
+  background-color: #e3ccdc;
+  transform: translateY(-1px);
+}
+
+.onboarding-option-card[aria-pressed='true'] {
+  background-color: #dfc2d6;
+  border-color: var(--color-secondary);
+  box-shadow: 0 2px 10px rgba(159, 62, 118, 0.16);
+}
+
+.onboarding-option-card:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Custom need input in Step 4 */
+.onboarding-custom-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.onboarding-custom-input {
+  border: none;
+  border-bottom: 1.5px solid #1e1d24;
+  background: transparent;
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 1.15rem;
+  color: #1e1d24;
+  outline: none;
+  padding: 0 4px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.onboarding-custom-input::placeholder {
+  color: rgba(30, 29, 36, 0.45);
+}
+
+.onboarding-custom-input:focus {
+  border-bottom-color: var(--color-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Genre Panel (Step 2)
+   -------------------------------------------------------------------------- */
+.genre-scroll-panel {
+  width: 100%;
+  max-width: 480px;
+  background-color: #ebd7e4;
+  border-radius: 3px;
+  padding: 16px 20px;
+  box-sizing: border-box;
+  max-height: 270px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  scrollbar-width: thin;
+  scrollbar-color: #cfb3c6 transparent;
+}
+
+.genre-scroll-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.genre-scroll-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.genre-scroll-panel::-webkit-scrollbar-thumb {
+  background-color: #cfb3c6;
+  border-radius: 3px;
+}
+
+.genre-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 120ms ease;
+  box-sizing: border-box;
+}
+
+.genre-item-btn:hover {
+  opacity: 0.85;
+}
+
+.genre-item-btn:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.genre-checkbox {
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 120ms ease;
+}
+
+.genre-item-btn[aria-checked='true'] .genre-checkbox {
+  background-color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+.genre-label {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 1.15rem;
+  color: #1e1d24;
+}
+
+/* --------------------------------------------------------------------------
+   Screen 5: Integrations Panel
+   -------------------------------------------------------------------------- */
+.integration-panel {
+  width: 100%;
+  max-width: 480px;
+  background-color: #ebd7e4;
+  border-radius: 3px;
+  padding: 24px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.integration-section-title {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1e1d24;
+  margin: 0 0 14px 0;
+  text-align: center;
+}
+
+.integration-row-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+}
+
+.integration-col-one {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.integration-card-btn {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 150ms var(--ease-default);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.integration-card-btn:hover {
+  background-color: #fafafa;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.integration-card-btn[aria-pressed='true'] {
+  border: 1.5px solid var(--color-secondary);
+  background-color: #fff9fc;
+  box-shadow: 0 2px 8px rgba(159, 62, 118, 0.18);
+}
+
+.integration-card-btn:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+.integration-check-indicator {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.integration-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #48479e;
+  opacity: 0.3;
+  margin: 20px 0;
+}
+
+.integration-preference-hint {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: 14px;
+  max-width: 420px;
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   Navigation Controls (Bottom)
+   -------------------------------------------------------------------------- */
+.onboarding-nav {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-6);
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.onboarding-nav-btn {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 1.2rem;
+  color: #1e1d24;
+  background: transparent;
+  border: none;
+  padding: 6px 0;
+  cursor: pointer;
+  transition: opacity 150ms ease, transform 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.onboarding-nav-btn:hover:not(:disabled) {
+  opacity: 0.75;
+  transform: translateX(1px);
+}
+
+.onboarding-nav-btn.back:hover:not(:disabled) {
+  transform: translateX(-1px);
+}
+
+.onboarding-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.onboarding-nav-btn:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Validation notice badge */
+.onboarding-validation-notice {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-secondary);
+  margin-top: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}

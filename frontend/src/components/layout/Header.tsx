@@ -25,17 +25,9 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="navbar-inner">
         {/* Official Brand Logo */}
         <a href="#" className="brand-logo" aria-label="Verba Home">
-          <img
-            src={verbaLogo}
-            alt="Verba Logo"
-            style={{
-              height: '34px',
-              width: 'auto',
-              maxWidth: '36px',
-              objectFit: 'contain',
-              display: 'block',
-            }}
-          />
+          <div className="brand-logo-icon">
+            <img src={verbaLogo} alt="Verba Logo" />
+          </div>
           <span>Verba</span>
         </a>
 
