@@ -1,0 +1,455 @@
+/**
+ * Verba App Shell & Discover Page Styles
+ * Follows Verba Design System tokens & layout guidelines
+ */
+
+/* ==========================================================================
+   App Shell Layout
+   ========================================================================== */
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  overflow-x: hidden;
+}
+
+.app-main-content {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-width-site);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-16);
+}
+
+@media (max-width: 768px) {
+  .app-main-content {
+    padding: var(--space-6) var(--space-4) var(--space-12);
+  }
+}
+
+/* ==========================================================================
+   Top Navigation Bar (Authenticated)
+   ========================================================================== */
+
+.app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: var(--header-height);
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-border-subtle);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.app-navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width-site);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.app-navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.app-navbar-logo-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.app-navbar-logo-icon img {
+  width: 76px;
+  height: 76px;
+  max-width: none;
+  object-fit: contain;
+  display: block;
+}
+
+.app-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+}
+
+.app-nav-link {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: var(--space-2) 0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  position: relative;
+  white-space: nowrap;
+}
+
+.app-nav-link:hover {
+  color: var(--color-primary);
+}
+
+.app-nav-link.active {
+  color: #6260c6;
+  font-weight: 500;
+}
+
+/* Mobile Toggle & Drawer */
+.app-mobile-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: var(--space-2);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+
+.app-mobile-nav-drawer {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-dropdown);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  gap: var(--space-3);
+  z-index: 99;
+}
+
+.app-mobile-nav-link {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+  text-align: left;
+  background: none;
+  border: none;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  width: 100%;
+}
+
+.app-mobile-nav-link:last-child {
+  border-bottom: none;
+}
+
+.app-mobile-nav-link.active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .app-nav-links {
+    display: none;
+  }
+  .app-mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Dual Search Bar Component
+   ========================================================================== */
+
+.discover-search-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+  width: 100%;
+}
+
+.discover-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.discover-search-icon {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.discover-search-input {
+  width: 100%;
+  padding: 0.85rem var(--space-5);
+  padding-left: 2.75rem;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: all var(--transition-normal);
+}
+
+.discover-search-input::placeholder {
+  color: #8f8d9c;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+.discover-search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-focus), var(--shadow-sm);
+}
+
+@media (max-width: 640px) {
+  .discover-search-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+}
+
+/* ==========================================================================
+   Section Header
+   ========================================================================== */
+
+.discover-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  width: 100%;
+}
+
+.discover-section-title {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.discover-see-all {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  padding: var(--space-1) 0;
+}
+
+.discover-see-all:hover {
+  color: var(--color-primary);
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   Genre Chips (Lavender styling matching mockup)
+   ========================================================================== */
+
+.genre-chips-container {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: var(--space-8);
+  padding: var(--space-1) 0;
+}
+
+.genre-chips-container::-webkit-scrollbar {
+  display: none;
+}
+
+.genre-chips-track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: min-content;
+}
+
+.genre-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1.15rem;
+  background-color: #d8dcf8;
+  color: #1e1d24;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1rem, 1.15vw, 1.15rem);
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.genre-chip:hover {
+  background-color: #cbcefa;
+  transform: translateY(-1px);
+}
+
+.genre-chip.active {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   Book Carousel & Book Card
+   ========================================================================== */
+
+.book-carousel-container {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: var(--space-8);
+  padding: var(--space-1) 0 var(--space-3);
+}
+
+.book-carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.book-carousel-track {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(1rem, 1.8vw, 1.5rem);
+  min-width: min-content;
+}
+
+.discover-book-card {
+  width: clamp(140px, 16vw, 190px);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  user-select: none;
+}
+
+.discover-book-card:hover {
+  transform: translateY(-4px);
+}
+
+.discover-book-card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.discover-book-cover-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  background-color: var(--color-surface-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.discover-book-card:hover .discover-book-cover-wrapper {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.discover-book-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Fallback cover styling */
+.discover-book-cover-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+  text-align: center;
+  position: relative;
+  color: #ffffff;
+}
+
+.discover-book-cover-fallback-author {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.discover-book-cover-fallback-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Book spine tactile highlight overlay */
+.book-cover-spine-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(0, 0, 0, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Placeholder Page Card */
+.placeholder-page-card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  max-width: 580px;
+  margin: var(--space-12) auto;
+  box-shadow: var(--shadow-card);
+}

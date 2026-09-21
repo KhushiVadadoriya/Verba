@@ -3,9 +3,10 @@ import verbaLogo from '../../assets/verba-logo.png'
 
 export interface WelcomeStepProps {
   onStart: () => void
+  onSkip?: () => void
 }
 
-export const WelcomeStep: React.FC<WelcomeStepProps> = ({ onStart }) => {
+export const WelcomeStep: React.FC<WelcomeStepProps> = ({ onStart, onSkip }) => {
   return (
     <div className="onboarding-page">
       <main className="onboarding-container" role="region" aria-label="Welcome to Verba">
@@ -34,6 +35,24 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = ({ onStart }) => {
           >
             Get Started
           </button>
+
+          {/* Optional Skip Action */}
+          {onSkip && (
+            <button
+              type="button"
+              className="btn-ghost onboarding-skip-btn"
+              style={{
+                marginTop: 'var(--space-3)',
+                color: 'var(--color-text-secondary)',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'var(--text-sm)',
+                cursor: 'pointer',
+              }}
+              onClick={onSkip}
+            >
+              Skip to Discover
+            </button>
+          )}
         </div>
       </main>
     </div>

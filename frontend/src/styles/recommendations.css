@@ -1,0 +1,549 @@
+/**
+ * Verba Dedicated "Recommended for You" Page Styles
+ * Matches the reference design screenshots & design system tokens
+ */
+
+/* ==========================================================================
+   Page Header
+   ========================================================================== */
+
+.recommended-page {
+  width: 100%;
+}
+
+.recommended-header {
+  margin-bottom: var(--space-8);
+}
+
+.recommended-title {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.recommended-title-accent {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.recommended-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Main Featured Recommendation Panel
+   ========================================================================== */
+
+.featured-recommendation-panel {
+  background-color: #fcf0f5;
+  border: 1px solid rgba(159, 62, 118, 0.1);
+  border-radius: var(--radius-xl);
+  padding: clamp(var(--space-6), 3vw, var(--space-10));
+  margin-bottom: var(--space-10);
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-8);
+  box-shadow: 0 2px 12px rgba(159, 62, 118, 0.03);
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+/* Column 1: Book Cover */
+.featured-cover-col {
+  width: clamp(160px, 18vw, 205px);
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.featured-cover-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
+  background-color: var(--color-surface-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featured-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Fallback cover styling */
+.featured-cover-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+}
+
+.featured-cover-fallback-author {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.featured-cover-fallback-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Column 2: Book Info */
+.featured-info-col {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.featured-badge {
+  display: inline-block;
+  background-color: #f6dce7;
+  color: var(--color-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+  letter-spacing: 0.01em;
+}
+
+.featured-title {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.6rem, 2.4vw, 2.15rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.22;
+  margin: 0 0 var(--space-2) 0;
+  text-wrap: balance;
+}
+
+.featured-author {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.featured-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.featured-star-icon {
+  color: #f59e0b;
+  fill: #f59e0b;
+}
+
+.featured-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background-color: var(--color-secondary);
+  color: var(--color-text-inverse);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+
+.featured-details-btn:hover {
+  background-color: var(--color-secondary-hover);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-1px);
+}
+
+.featured-details-btn:active {
+  transform: translateY(0);
+}
+
+/* Vertical Divider */
+.featured-divider {
+  width: 1px;
+  background-color: rgba(159, 62, 118, 0.16);
+  margin: 0 var(--space-2);
+  align-self: stretch;
+}
+
+/* Column 3: Why we recommended this */
+.featured-reasons-col {
+  flex: 1.25;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.featured-reasons-title {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-4) 0;
+}
+
+.featured-reasons-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.reason-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(159, 62, 118, 0.05);
+}
+
+.reason-icon {
+  color: var(--color-secondary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.reason-text {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.reason-highlight {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   "More for you" Section
+   ========================================================================== */
+
+.more-for-you-section {
+  margin-bottom: var(--space-10);
+  width: 100%;
+}
+
+.more-for-you-header {
+  margin-bottom: var(--space-4);
+}
+
+.more-for-you-title {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 0 0 4px 0;
+}
+
+.more-for-you-subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.more-for-you-grid-container {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 2px 12px 2px;
+}
+
+.more-for-you-grid-container::-webkit-scrollbar {
+  display: none;
+}
+
+.more-for-you-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-4);
+  width: 100%;
+}
+
+/* Individual Card */
+.more-card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  user-select: none;
+  outline: none;
+  position: relative;
+}
+
+.more-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(159, 62, 118, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.more-card:focus-visible {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(159, 62, 118, 0.2);
+}
+
+.more-card.active {
+  border: 1.5px solid var(--color-secondary);
+  box-shadow: 0 4px 14px rgba(159, 62, 118, 0.12);
+}
+
+.more-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.more-card-cover-wrapper {
+  width: 76px;
+  height: 114px;
+  aspect-ratio: 2 / 3;
+  flex-shrink: 0;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background-color: var(--color-surface-subtle);
+  position: relative;
+}
+
+.more-card-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.more-card-cover-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6px;
+  text-align: center;
+  color: #ffffff;
+  font-family: var(--font-serif);
+  font-size: 0.65rem;
+  line-height: 1.2;
+}
+
+.more-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.more-card-title {
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  margin: 0 0 4px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.more-card-author {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.more-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.more-card-reason-box {
+  background-color: #fbf1f6;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   Pagination Controls
+   ========================================================================== */
+
+.recommendations-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: var(--space-6) 0 var(--space-12);
+  width: 100%;
+}
+
+.pagination-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xs);
+  border: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  background-color: #fbf1f6;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #f5dbe8;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pagination-btn.active {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+/* Laptop & Large Tablets (<= 1024px) */
+@media (max-width: 1024px) {
+  .featured-recommendation-panel {
+    gap: var(--space-6);
+    padding: var(--space-6);
+  }
+
+  .more-for-you-grid {
+    gap: var(--space-3);
+  }
+}
+
+/* Tablets (<= 860px) */
+@media (max-width: 860px) {
+  .featured-recommendation-panel {
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .featured-cover-col {
+    width: 160px;
+    margin: 0 auto;
+  }
+
+  .featured-info-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .featured-divider {
+    width: 100%;
+    height: 1px;
+    margin: var(--space-2) 0;
+  }
+
+  .more-for-you-grid {
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    min-width: min-content;
+  }
+}
+
+/* Mobile Devices (<= 640px) */
+@media (max-width: 640px) {
+  .recommended-title {
+    font-size: 1.85rem;
+  }
+
+  .featured-recommendation-panel {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+  }
+
+  .featured-cover-col {
+    width: 140px;
+  }
+
+  .featured-title {
+    font-size: 1.5rem;
+  }
+
+  .reason-card {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .reason-text {
+    font-size: 0.84rem;
+  }
+
+  .more-for-you-grid {
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    min-width: min-content;
+  }
+}

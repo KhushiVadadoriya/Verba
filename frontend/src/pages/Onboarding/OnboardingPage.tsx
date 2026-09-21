@@ -111,7 +111,7 @@ export const OnboardingPage: React.FC<OnboardingPageProps> = ({
 
   // Screen 0: Welcome Screen
   if (step === 0) {
-    return <WelcomeStep onStart={() => setStep(1)} />
+    return <WelcomeStep onStart={() => setStep(1)} onSkip={onSkipToHome} />
   }
 
   return (

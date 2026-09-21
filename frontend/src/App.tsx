@@ -2,10 +2,23 @@ import { useState, useEffect } from 'react'
 import { LandingPage } from './pages/Landing'
 import { SignInPage, SignUpPage } from './pages/Auth'
 import { OnboardingPage } from './pages/Onboarding'
-import verbaLogo from './assets/verba-logo.png'
+import { DiscoverPage } from './pages/Discover'
+import { RecommendedPage } from './pages/Recommended'
+import { AppLayout } from './layouts/AppLayout'
+import type { NavItemKey } from './components/layout/Navbar'
 import type { OnboardingAnswers } from './types/onboarding'
 
-export type AppView = 'landing' | 'signin' | 'signup' | 'onboarding' | 'home'
+export type AppView =
+  | 'landing'
+  | 'signin'
+  | 'signup'
+  | 'onboarding'
+  | 'home'
+  | 'discover'
+  | 'discover/recommended'
+  | 'insights'
+  | 'library'
+  | 'profile'
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>(() => {
@@ -14,6 +27,11 @@ function App() {
     if (hash === '#signup') return 'signup'
     if (hash === '#onboarding') return 'onboarding'
     if (hash === '#home') return 'home'
+    if (hash === '#discover/recommended') return 'discover/recommended'
+    if (hash === '#discover') return 'discover'
+    if (hash === '#insights') return 'insights'
+    if (hash === '#library') return 'library'
+    if (hash === '#profile') return 'profile'
     return 'landing'
   })
 
@@ -26,6 +44,10 @@ function App() {
       else if (hash === '#signup') setCurrentView('signup')
       else if (hash === '#onboarding') setCurrentView('onboarding')
       else if (hash === '#home') setCurrentView('home')
+      else if (hash === '#discover') setCurrentView('discover')
+      else if (hash === '#insights') setCurrentView('insights')
+      else if (hash === '#library') setCurrentView('library')
+      else if (hash === '#profile') setCurrentView('profile')
       else if (
         hash === '#landing' ||
         hash === '' ||
@@ -47,9 +69,15 @@ function App() {
     else if (view === 'signup') window.location.hash = 'signup'
     else if (view === 'onboarding') window.location.hash = 'onboarding'
     else if (view === 'home') window.location.hash = 'home'
+    else if (view === 'discover') window.location.hash = 'discover'
+    else if (view === 'insights') window.location.hash = 'insights'
+    else if (view === 'library') window.location.hash = 'library'
+    else if (view === 'profile') window.location.hash = 'profile'
     else window.location.hash = ''
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  // --- Auth & Onboarding Flows (Preserved) ---
 
   if (currentView === 'signin') {
     return (
@@ -57,7 +85,7 @@ function App() {
         onNavigateToSignUp={() => navigateTo('signup')}
         onBackToHome={() => navigateTo('landing')}
         onSignInSuccess={() => {
-          navigateTo('home')
+          navigateTo('discover')
         }}
       />
     )
@@ -69,7 +97,6 @@ function App() {
         onNavigateToSignIn={() => navigateTo('signin')}
         onBackToHome={() => navigateTo('landing')}
         onSignUpSuccess={() => {
-          // Advance new sign-up directly to personalized onboarding
           navigateTo('onboarding')
         }}
       />
@@ -81,109 +108,134 @@ function App() {
       <OnboardingPage
         onFinish={(answers) => {
           setSavedAnswers(answers)
-          // Route completed onboarding directly to authenticated dashboard destination
-          navigateTo('home')
+          // Redirect to #discover when onboarding is completed
+          navigateTo('discover')
         }}
         onSkipToHome={() => {
-          navigateTo('home')
+          // Redirect to #discover when onboarding is skipped
+          navigateTo('discover')
         }}
       />
     )
   }
 
-  if (currentView === 'home') {
+  // --- Authenticated App Shell: Discover Page ---
+
+  if (currentView === 'discover') {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'var(--color-bg-primary)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 'var(--space-8) var(--space-4)',
-          textAlign: 'center',
-        }}
+      <AppLayout
+        activeNav="discover"
+        onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
       >
-        <div className="auth-logo-icon" style={{ marginBottom: 'var(--space-4)' }}>
-          <img src={verbaLogo} alt="Verba Logo" />
-        </div>
-
-        <h1
-          style={{
-            fontFamily: 'var(--font-roman, var(--font-serif))',
-            fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-            fontWeight: 400,
-            color: 'var(--color-text-primary)',
-            marginBottom: 'var(--space-3)',
-          }}
-        >
-          Welcome to Your Sanctuary
-        </h1>
-
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 'var(--text-base)',
-            color: 'var(--color-text-secondary)',
-            maxWidth: '520px',
-            lineHeight: 1.6,
-            marginBottom: 'var(--space-6)',
-          }}
-        >
-          Your personalized reading intelligence profile has been configured.
-          {savedAnswers && (
-            <span style={{ display: 'block', marginTop: 'var(--space-2)' }}>
-              Selected genres:{' '}
-              <strong style={{ color: 'var(--color-primary)' }}>
-                {savedAnswers.favoriteGenres.length > 0
-                  ? savedAnswers.favoriteGenres.join(', ')
-                  : 'None selected'}
-              </strong>
-            </span>
-          )}
-        </p>
-
-        <div
-          style={{
-            padding: 'var(--space-3) var(--space-6)',
-            backgroundColor: 'rgba(72, 71, 158, 0.08)',
-            border: '1px solid rgba(72, 71, 158, 0.2)',
-            borderRadius: 'var(--radius-md)',
-            marginBottom: 'var(--space-6)',
-            fontFamily: 'var(--font-sans)',
-            fontSize: 'var(--text-sm)',
-            color: 'var(--color-primary)',
-          }}
-        >
-          Authenticated Dashboard Placeholder (Phase 5 / Library Feature)
-        </div>
-
-        <div style={{ display: 'flex', gap: 'var(--space-4)', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button
-            type="button"
-            className="welcome-start-btn"
-            onClick={() => navigateTo('landing')}
-            style={{ marginTop: 0 }}
-          >
-            Explore Landing Page
-          </button>
-          <button
-            type="button"
-            className="btn-outline"
-            onClick={() => navigateTo('onboarding')}
-            style={{
-              padding: '12px 28px',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'var(--text-base)',
-            }}
-          >
-            Restart Onboarding
-          </button>
-        </div>
-      </div>
+        <DiscoverPage />
+      </AppLayout>
     )
   }
+
+  // --- Authenticated App Shell: Placeholder Views (Home, Insights, Library, Profile) ---
+
+  const isPlaceholderAuthView = ['home', 'insights', 'library', 'profile'].includes(currentView)
+  if (isPlaceholderAuthView) {
+    const placeholderContent: Record<
+      string,
+      { title: string; subtitle: string; description: string }
+    > = {
+      home: {
+        title: 'Home Sanctuary',
+        subtitle: 'Personalized Daily Literary Feed',
+        description:
+          'Your customized reading intelligence dashboard is in active development for Phase 5.',
+      },
+      insights: {
+        title: 'Literary Insights',
+        subtitle: 'Patterns, Themes & Emotional Journey',
+        description:
+          'Reading statistics, mood analytics, and reflection journals will be available here soon.',
+      },
+      library: {
+        title: 'My Library',
+        subtitle: 'Bookshelf & Reading Vault',
+        description:
+          'Track your current reads, organize thematic bookshelves, and review notes in Phase 5.',
+      },
+      profile: {
+        title: 'Reader Profile',
+        subtitle: 'Personalized Reading DNA',
+        description:
+          'Configure reading pace goals, aesthetic themes, and account preferences.',
+      },
+    }
+
+    const currentInfo = placeholderContent[currentView] || placeholderContent.home
+
+    return (
+      <AppLayout
+        activeNav={currentView as NavItemKey}
+        onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
+      >
+        <div className="placeholder-page-card">
+          <h1
+            style={{
+              fontFamily: 'var(--font-roman, var(--font-serif))',
+              fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
+              fontWeight: 400,
+              color: 'var(--color-text-primary)',
+              marginBottom: 'var(--space-2)',
+            }}
+          >
+            {currentInfo.title}
+          </h1>
+
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 600,
+              color: 'var(--color-primary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              marginBottom: 'var(--space-4)',
+            }}
+          >
+            {currentInfo.subtitle}
+          </p>
+
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: 'var(--text-base)',
+              color: 'var(--color-text-secondary)',
+              maxWidth: '480px',
+              margin: '0 auto var(--space-6)',
+              lineHeight: 1.6,
+            }}
+          >
+            {currentInfo.description}
+            {currentView === 'home' && savedAnswers && (
+              <span style={{ display: 'block', marginTop: 'var(--space-3)' }}>
+                Onboarding Selected Genres:{' '}
+                <strong style={{ color: 'var(--color-primary)' }}>
+                  {savedAnswers.favoriteGenres.length > 0
+                    ? savedAnswers.favoriteGenres.join(', ')
+                    : 'None selected'}
+                </strong>
+              </span>
+            )}
+          </p>
+
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => navigateTo('discover')}
+          >
+            Explore Discover Page
+          </button>
+        </div>
+      </AppLayout>
+    )
+  }
+
+  // --- Landing Page (Default Public Route) ---
 
   return (
     <LandingPage

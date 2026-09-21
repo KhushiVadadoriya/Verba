@@ -18,3 +18,12 @@ export type { ChipProps } from './Chip'
 
 export { StepIndicator } from './StepIndicator'
 export type { StepIndicatorProps } from './StepIndicator'
+
+export { SearchBar } from './SearchBar'
+export type { SearchBarProps } from './SearchBar'
+
+export { SectionHeader } from './SectionHeader'
+export type { SectionHeaderProps } from './SectionHeader'
+
+export { GenreChips, DEFAULT_GENRES } from './GenreChips'
+export type { GenreChipsProps } from './GenreChips'
