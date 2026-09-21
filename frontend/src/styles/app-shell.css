@@ -13,7 +13,8 @@
   flex-direction: column;
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  overflow-x: hidden;
+  overflow-x: clip;
+  padding-top: var(--header-height);
 }
 
 .app-main-content {
@@ -35,9 +36,11 @@
    ========================================================================== */
 
 .app-navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   width: 100%;
   height: var(--header-height);
   background-color: #ffffff;

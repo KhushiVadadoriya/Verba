@@ -4,11 +4,51 @@
  */
 
 /* ==========================================================================
-   Page Header
+   Page Header & Navigation
    ========================================================================== */
 
 .recommended-page {
   width: 100%;
+}
+
+.recommended-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: var(--space-6);
+  font-family: var(--font-roman, var(--font-serif));
+  font-size: clamp(1.5rem, 2.2vw, 1.75rem);
+  font-weight: 400;
+  color: var(--color-primary);
+  line-height: 1.2;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--transition-normal, 200ms ease);
+}
+
+.recommended-back-icon {
+  width: 1.15em;
+  height: 1.15em;
+  stroke-width: 2.25px;
+  flex-shrink: 0;
+  transition: transform var(--transition-normal, 200ms ease);
+}
+
+.recommended-back-btn:hover {
+  color: var(--color-secondary);
+}
+
+.recommended-back-btn:hover .recommended-back-icon {
+  transform: translateX(-4px);
+}
+
+.recommended-back-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm, 4px);
 }
 
 .recommended-header {
@@ -516,6 +556,11 @@
 
 /* Mobile Devices (<= 640px) */
 @media (max-width: 640px) {
+  .recommended-back-btn {
+    font-size: 1.35rem;
+    margin-bottom: var(--space-4);
+  }
+
   .recommended-title {
     font-size: 1.85rem;
   }

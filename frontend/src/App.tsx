@@ -4,6 +4,7 @@ import { SignInPage, SignUpPage } from './pages/Auth'
 import { OnboardingPage } from './pages/Onboarding'
 import { DiscoverPage } from './pages/Discover'
 import { RecommendedPage } from './pages/Recommended'
+import { GenresPage } from './pages/Genres'
 import { AppLayout } from './layouts/AppLayout'
 import type { NavItemKey } from './components/layout/Navbar'
 import type { OnboardingAnswers } from './types/onboarding'
@@ -16,6 +17,7 @@ export type AppView =
   | 'home'
   | 'discover'
   | 'discover/recommended'
+  | 'discover/genres'
   | 'insights'
   | 'library'
   | 'profile'
@@ -28,6 +30,7 @@ function App() {
     if (hash === '#onboarding') return 'onboarding'
     if (hash === '#home') return 'home'
     if (hash === '#discover/recommended') return 'discover/recommended'
+    if (hash === '#discover/genres') return 'discover/genres'
     if (hash === '#discover') return 'discover'
     if (hash === '#insights') return 'insights'
     if (hash === '#library') return 'library'
@@ -44,6 +47,8 @@ function App() {
       else if (hash === '#signup') setCurrentView('signup')
       else if (hash === '#onboarding') setCurrentView('onboarding')
       else if (hash === '#home') setCurrentView('home')
+      else if (hash === '#discover/recommended') setCurrentView('discover/recommended')
+      else if (hash === '#discover/genres') setCurrentView('discover/genres')
       else if (hash === '#discover') setCurrentView('discover')
       else if (hash === '#insights') setCurrentView('insights')
       else if (hash === '#library') setCurrentView('library')
@@ -69,6 +74,8 @@ function App() {
     else if (view === 'signup') window.location.hash = 'signup'
     else if (view === 'onboarding') window.location.hash = 'onboarding'
     else if (view === 'home') window.location.hash = 'home'
+    else if (view === 'discover/recommended') window.location.hash = 'discover/recommended'
+    else if (view === 'discover/genres') window.location.hash = 'discover/genres'
     else if (view === 'discover') window.location.hash = 'discover'
     else if (view === 'insights') window.location.hash = 'insights'
     else if (view === 'library') window.location.hash = 'library'
@@ -119,6 +126,36 @@ function App() {
     )
   }
 
+  // --- Authenticated App Shell: Recommended for You Page ---
+
+  if (currentView === 'discover/recommended') {
+    return (
+      <AppLayout
+        activeNav="discover"
+        onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
+      >
+        <RecommendedPage
+          onBackToDiscover={() => navigateTo('discover')}
+        />
+      </AppLayout>
+    )
+  }
+
+  // --- Authenticated App Shell: Explore by Genre Page ---
+
+  if (currentView === 'discover/genres') {
+    return (
+      <AppLayout
+        activeNav="discover"
+        onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
+      >
+        <GenresPage
+          onBackToDiscover={() => navigateTo('discover')}
+        />
+      </AppLayout>
+    )
+  }
+
   // --- Authenticated App Shell: Discover Page ---
 
   if (currentView === 'discover') {
@@ -127,7 +164,10 @@ function App() {
         activeNav="discover"
         onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
       >
-        <DiscoverPage />
+        <DiscoverPage
+          onSeeAllRecommended={() => navigateTo('discover/recommended')}
+          onSeeAllGenres={() => navigateTo('discover/genres')}
+        />
       </AppLayout>
     )
   }

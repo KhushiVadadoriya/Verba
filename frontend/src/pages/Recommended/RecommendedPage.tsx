@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import {
   RECOMMENDED_DATASET,
   type RecommendationBook,
@@ -13,7 +14,7 @@ export interface RecommendedPageProps {
 }
 
 export const RecommendedPage: React.FC<RecommendedPageProps> = ({
-  onBackToDiscover: _onBackToDiscover,
+  onBackToDiscover,
   onBookDetails,
 }) => {
   // Default featured book is 'Normal People' as required
@@ -60,8 +61,27 @@ export const RecommendedPage: React.FC<RecommendedPageProps> = ({
     }
   }
 
+  const handleBack = () => {
+    if (onBackToDiscover) {
+      onBackToDiscover()
+    } else {
+      window.location.hash = 'discover'
+    }
+  }
+
   return (
     <div className="recommended-page">
+      {/* A. Back Navigation Control */}
+      <button
+        type="button"
+        className="recommended-back-btn"
+        onClick={handleBack}
+        aria-label="Back to Discover"
+      >
+        <ArrowLeft className="recommended-back-icon" aria-hidden="true" />
+        <span>Back</span>
+      </button>
+
       {/* B. Page Header */}
       <header className="recommended-header">
         <h1 className="recommended-title">

@@ -112,11 +112,13 @@ export const TRENDING_BOOKS: BookCardData[] = [
 export interface DiscoverPageProps {
   onBookSelect?: (book: BookCardData) => void
   onSeeAllRecommended?: () => void
+  onSeeAllGenres?: () => void
 }
 
 export const DiscoverPage: React.FC<DiscoverPageProps> = ({
   onBookSelect,
   onSeeAllRecommended,
+  onSeeAllGenres,
 }) => {
   const [booksSearch, setBooksSearch] = useState('')
   const [moodSearch, setMoodSearch] = useState('')
@@ -131,6 +133,14 @@ export const DiscoverPage: React.FC<DiscoverPageProps> = ({
       onSeeAllRecommended()
     } else {
       window.location.hash = 'discover/recommended'
+    }
+  }
+
+  const handleSeeAllGenres = () => {
+    if (onSeeAllGenres) {
+      onSeeAllGenres()
+    } else {
+      window.location.hash = 'discover/genres'
     }
   }
 
@@ -162,10 +172,8 @@ export const DiscoverPage: React.FC<DiscoverPageProps> = ({
       <section aria-labelledby="genre-heading">
         <SectionHeader
           title="Explore by genre"
-          seeAllHref="#genres"
-          onSeeAllClick={() => {
-            // Future phase: explore all genres
-          }}
+          seeAllHref="#discover/genres"
+          onSeeAllClick={handleSeeAllGenres}
         />
         <GenreChips
           selectedGenre={selectedGenre}
