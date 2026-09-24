@@ -14,7 +14,6 @@ export const DEFAULT_GENRES = [
   'Romance',
   'Psychology',
   'Contemporary',
-  'Horror',
 ]
 
 export const GenreChips: React.FC<GenreChipsProps> = ({
@@ -34,9 +33,16 @@ export const GenreChips: React.FC<GenreChipsProps> = ({
               type="button"
               className={`genre-chip ${isSelected ? 'active' : ''}`}
               onClick={() => onSelectGenre?.(genre)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onSelectGenre?.(genre)
+                }
+              }}
+              aria-label={`Explore ${genre} books`}
               aria-pressed={isSelected}
             >
-              {genre.toLowerCase() === 'horror' ? 'horror ...' : genre}
+              {genre}
             </button>
           )
         })}

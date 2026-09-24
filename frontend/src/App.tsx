@@ -5,9 +5,11 @@ import { OnboardingPage } from './pages/Onboarding'
 import { DiscoverPage } from './pages/Discover'
 import { RecommendedPage } from './pages/Recommended'
 import { GenresPage } from './pages/Genres'
+import { HomePage } from './pages/Home'
 import { AppLayout } from './layouts/AppLayout'
 import type { NavItemKey } from './components/layout/Navbar'
 import type { OnboardingAnswers } from './types/onboarding'
+import { toGenreSlug } from './types/genres'
 
 export type AppView =
   | 'landing'
@@ -22,65 +24,52 @@ export type AppView =
   | 'library'
   | 'profile'
 
+export const parseHashRoute = (rawHash: string): AppView => {
+  const clean = rawHash.replace(/^#/, '')
+  const [routePath] = clean.split('?')
+  const path = routePath.toLowerCase()
+
+  if (path === 'signin') return 'signin'
+  if (path === 'signup') return 'signup'
+  if (path === 'onboarding') return 'onboarding'
+  if (path === 'home') return 'home'
+  if (path === 'discover/recommended') return 'discover/recommended'
+  if (path === 'discover/genres') return 'discover/genres'
+  if (path === 'discover') return 'discover'
+  if (path === 'insights') return 'insights'
+  if (path === 'library') return 'library'
+  if (path === 'profile') return 'profile'
+  return 'landing'
+}
+
 function App() {
   const [currentView, setCurrentView] = useState<AppView>(() => {
-    const hash = window.location.hash.toLowerCase()
-    if (hash === '#signin') return 'signin'
-    if (hash === '#signup') return 'signup'
-    if (hash === '#onboarding') return 'onboarding'
-    if (hash === '#home') return 'home'
-    if (hash === '#discover/recommended') return 'discover/recommended'
-    if (hash === '#discover/genres') return 'discover/genres'
-    if (hash === '#discover') return 'discover'
-    if (hash === '#insights') return 'insights'
-    if (hash === '#library') return 'library'
-    if (hash === '#profile') return 'profile'
-    return 'landing'
+    return parseHashRoute(window.location.hash)
   })
 
   const [savedAnswers, setSavedAnswers] = useState<OnboardingAnswers | null>(null)
 
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.toLowerCase()
-      if (hash === '#signin') setCurrentView('signin')
-      else if (hash === '#signup') setCurrentView('signup')
-      else if (hash === '#onboarding') setCurrentView('onboarding')
-      else if (hash === '#home') setCurrentView('home')
-      else if (hash === '#discover/recommended') setCurrentView('discover/recommended')
-      else if (hash === '#discover/genres') setCurrentView('discover/genres')
-      else if (hash === '#discover') setCurrentView('discover')
-      else if (hash === '#insights') setCurrentView('insights')
-      else if (hash === '#library') setCurrentView('library')
-      else if (hash === '#profile') setCurrentView('profile')
-      else if (
-        hash === '#landing' ||
-        hash === '' ||
-        hash === '#about' ||
-        hash === '#browse' ||
-        hash === '#shelf'
-      ) {
-        setCurrentView('landing')
-      }
+      setCurrentView(parseHashRoute(window.location.hash))
     }
 
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
-  const navigateTo = (view: AppView) => {
+  const navigateTo = (view: AppView, queryParams?: Record<string, string>) => {
     setCurrentView(view)
-    if (view === 'signin') window.location.hash = 'signin'
-    else if (view === 'signup') window.location.hash = 'signup'
-    else if (view === 'onboarding') window.location.hash = 'onboarding'
-    else if (view === 'home') window.location.hash = 'home'
-    else if (view === 'discover/recommended') window.location.hash = 'discover/recommended'
-    else if (view === 'discover/genres') window.location.hash = 'discover/genres'
-    else if (view === 'discover') window.location.hash = 'discover'
-    else if (view === 'insights') window.location.hash = 'insights'
-    else if (view === 'library') window.location.hash = 'library'
-    else if (view === 'profile') window.location.hash = 'profile'
-    else window.location.hash = ''
+    if (view === 'landing') {
+      window.location.hash = ''
+    } else {
+      let hash = view
+      if (queryParams && Object.keys(queryParams).length > 0) {
+        const qs = new URLSearchParams(queryParams).toString()
+        hash += `?${qs}`
+      }
+      window.location.hash = hash
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -167,25 +156,39 @@ function App() {
         <DiscoverPage
           onSeeAllRecommended={() => navigateTo('discover/recommended')}
           onSeeAllGenres={() => navigateTo('discover/genres')}
+          onSelectGenre={(genre) => {
+            const slug = toGenreSlug(genre)
+            navigateTo('discover/genres', { genre: slug })
+          }}
         />
       </AppLayout>
     )
   }
 
-  // --- Authenticated App Shell: Placeholder Views (Home, Insights, Library, Profile) ---
+  // --- Authenticated App Shell: Home Dashboard Page ---
 
-  const isPlaceholderAuthView = ['home', 'insights', 'library', 'profile'].includes(currentView)
+  if (currentView === 'home') {
+    return (
+      <AppLayout
+        activeNav="home"
+        onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
+      >
+        <HomePage
+          userName={savedAnswers ? 'Khushi' : 'Khushi'}
+          onNavigate={(view: AppView) => navigateTo(view)}
+        />
+      </AppLayout>
+    )
+  }
+
+  // --- Authenticated App Shell: Placeholder Views (Insights, Library, Profile) ---
+
+  const isPlaceholderAuthView = ['insights', 'library', 'profile'].includes(currentView)
   if (isPlaceholderAuthView) {
     const placeholderContent: Record<
       string,
       { title: string; subtitle: string; description: string }
     > = {
-      home: {
-        title: 'Home Sanctuary',
-        subtitle: 'Personalized Daily Literary Feed',
-        description:
-          'Your customized reading intelligence dashboard is in active development for Phase 5.',
-      },
       insights: {
         title: 'Literary Insights',
         subtitle: 'Patterns, Themes & Emotional Journey',
@@ -206,7 +209,7 @@ function App() {
       },
     }
 
-    const currentInfo = placeholderContent[currentView] || placeholderContent.home
+    const currentInfo = placeholderContent[currentView] || placeholderContent.insights
 
     return (
       <AppLayout
@@ -251,16 +254,6 @@ function App() {
             }}
           >
             {currentInfo.description}
-            {currentView === 'home' && savedAnswers && (
-              <span style={{ display: 'block', marginTop: 'var(--space-3)' }}>
-                Onboarding Selected Genres:{' '}
-                <strong style={{ color: 'var(--color-primary)' }}>
-                  {savedAnswers.favoriteGenres.length > 0
-                    ? savedAnswers.favoriteGenres.join(', ')
-                    : 'None selected'}
-                </strong>
-              </span>
-            )}
           </p>
 
           <button

@@ -4,6 +4,7 @@ import { SectionHeader } from '../../components/common/SectionHeader'
 import { GenreChips } from '../../components/common/GenreChips'
 import { BookCarousel } from '../../components/books/BookCarousel'
 import type { BookCardData } from '../../components/books/BookCard'
+import { toGenreSlug } from '../../types/genres'
 
 // Mock book dataset reflecting the mockup titles and authors
 export const RECOMMENDED_BOOKS: BookCardData[] = [
@@ -113,19 +114,25 @@ export interface DiscoverPageProps {
   onBookSelect?: (book: BookCardData) => void
   onSeeAllRecommended?: () => void
   onSeeAllGenres?: () => void
+  onSelectGenre?: (genre: string) => void
 }
 
 export const DiscoverPage: React.FC<DiscoverPageProps> = ({
   onBookSelect,
   onSeeAllRecommended,
   onSeeAllGenres,
+  onSelectGenre,
 }) => {
   const [booksSearch, setBooksSearch] = useState('')
   const [moodSearch, setMoodSearch] = useState('')
-  const [selectedGenre, setSelectedGenre] = useState<string | null>(null)
 
-  const handleGenreToggle = (genre: string) => {
-    setSelectedGenre((prev) => (prev === genre ? null : genre))
+  const handleGenreClick = (genre: string) => {
+    if (onSelectGenre) {
+      onSelectGenre(genre)
+    } else {
+      const slug = toGenreSlug(genre)
+      window.location.hash = `discover/genres?genre=${encodeURIComponent(slug)}`
+    }
   }
 
   const handleSeeAllRec = () => {
@@ -176,8 +183,7 @@ export const DiscoverPage: React.FC<DiscoverPageProps> = ({
           onSeeAllClick={handleSeeAllGenres}
         />
         <GenreChips
-          selectedGenre={selectedGenre}
-          onSelectGenre={handleGenreToggle}
+          onSelectGenre={handleGenreClick}
         />
       </section>
 
@@ -191,6 +197,7 @@ export const DiscoverPage: React.FC<DiscoverPageProps> = ({
           books={TRENDING_BOOKS}
           onBookClick={onBookSelect}
           ariaLabel="Trending now books"
+          isMarquee={true}
         />
       </section>
     </div>

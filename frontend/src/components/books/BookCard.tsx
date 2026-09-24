@@ -13,12 +13,14 @@ export interface BookCardProps {
   book: BookCardData
   onClick?: () => void
   className?: string
+  isDuplicate?: boolean
 }
 
 export const BookCard: React.FC<BookCardProps> = ({
   book,
   onClick,
   className = '',
+  isDuplicate = false,
 }) => {
   const [imageError, setImageError] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -39,9 +41,10 @@ export const BookCard: React.FC<BookCardProps> = ({
       className={`discover-book-card ${className}`}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      tabIndex={onClick ? 0 : undefined}
+      tabIndex={onClick && !isDuplicate ? 0 : isDuplicate ? -1 : undefined}
       role={onClick ? 'button' : undefined}
-      aria-label={`${book.title} by ${book.author}`}
+      aria-label={isDuplicate ? undefined : `${book.title} by ${book.author}`}
+      aria-hidden={isDuplicate ? true : undefined}
     >
       <div
         className="discover-book-cover-wrapper"

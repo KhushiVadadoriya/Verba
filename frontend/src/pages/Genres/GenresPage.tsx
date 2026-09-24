@@ -1,10 +1,13 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import {
   INITIAL_GENRE_BOOKS,
   type GenreBook,
   type GenreName,
   type SortOption,
+  matchGenreFromParam,
+  getGenreFromHash,
+  toGenreSlug,
 } from '../../types/genres'
 import { GenreSidebar } from '../../components/genres/GenreSidebar'
 import { GenreBookGrid } from '../../components/genres/GenreBookGrid'
@@ -15,16 +18,33 @@ import { Pagination } from '../../components/common/Pagination'
 export interface GenresPageProps {
   onBackToDiscover?: () => void
   onBookSelect?: (book: GenreBook) => void
+  initialGenre?: GenreName
 }
 
 export const GenresPage: React.FC<GenresPageProps> = ({
   onBackToDiscover,
   onBookSelect,
+  initialGenre,
 }) => {
-  const [selectedGenre, setSelectedGenre] = useState<GenreName>('Fiction')
+  const [selectedGenre, setSelectedGenre] = useState<GenreName>(() => {
+    if (initialGenre) return initialGenre
+    const param = getGenreFromHash()
+    return matchGenreFromParam(param)
+  })
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState<SortOption>('Most Popular')
   const [currentPage, setCurrentPage] = useState(1)
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const param = getGenreFromHash()
+      setSelectedGenre(matchGenreFromParam(param))
+      setCurrentPage(1)
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
 
   const handleBack = () => {
     if (onBackToDiscover) {
@@ -37,6 +57,8 @@ export const GenresPage: React.FC<GenresPageProps> = ({
   const handleGenreChange = (genre: GenreName) => {
     setSelectedGenre(genre)
     setCurrentPage(1)
+    const slug = toGenreSlug(genre)
+    window.location.hash = `discover/genres?genre=${encodeURIComponent(slug)}`
   }
 
   const handleSearchChange = (query: string) => {
@@ -54,11 +76,6 @@ export const GenresPage: React.FC<GenresPageProps> = ({
     let books = INITIAL_GENRE_BOOKS.filter((book) =>
       book.genres.includes(selectedGenre)
     )
-
-    // Fallback: If no books tagged with specific genre, show books that match or subset
-    if (books.length === 0) {
-      books = INITIAL_GENRE_BOOKS.slice(0, 8)
-    }
 
     // 2. Filter by Search Query
     if (searchQuery.trim()) {
@@ -152,11 +169,13 @@ export const GenresPage: React.FC<GenresPageProps> = ({
           />
 
           {/* Pagination */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          {displayedBooks.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
         </main>
       </div>
     </div>

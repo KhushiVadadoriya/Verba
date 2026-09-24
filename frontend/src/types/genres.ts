@@ -276,3 +276,61 @@ export const INITIAL_GENRE_BOOKS: GenreBook[] = [
     bgGradient: 'linear-gradient(175deg, #C29B38 0%, #4D3D12 100%)',
   },
 ]
+
+export const GENRE_BOOKS_DATASET = INITIAL_GENRE_BOOKS
+
+/**
+ * Normalizes a genre name or query parameter for case- and separator-insensitive comparison.
+ * e.g., "Self Growth", "self-growth", "self growth" -> "selfgrowth"
+ */
+export const normalizeGenre = (genre: string): string => {
+  return genre.toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
+/**
+ * Converts a genre title into a URL query slug.
+ * e.g., "Self Growth" -> "self-growth", "Fiction" -> "fiction"
+ */
+export const toGenreSlug = (genre: string): string => {
+  return genre.toLowerCase().trim().replace(/\s+/g, '-')
+}
+
+/**
+ * Matches an optional genre parameter from the URL to a valid GenreName in GENRE_OPTIONS.
+ * Defaults safely to 'Fiction' if missing, invalid, or unknown.
+ */
+export const matchGenreFromParam = (param: string | null | undefined): GenreName => {
+  if (!param) return 'Fiction'
+  const normalizedParam = normalizeGenre(param)
+  if (!normalizedParam) return 'Fiction'
+
+  const matched = GENRE_OPTIONS.find((genre) => {
+    return normalizeGenre(genre) === normalizedParam
+  })
+
+  return matched || 'Fiction'
+}
+
+/**
+ * Safely extracts the genre query parameter from a URL hash string.
+ * Supports hashes like "#discover/genres?genre=fantasy" or "#/discover/genres?genre=psychology".
+ */
+export const getGenreFromHash = (rawHash?: string): string | null => {
+  try {
+    const hash =
+      rawHash !== undefined
+        ? rawHash
+        : typeof window !== 'undefined'
+          ? window.location.hash
+          : ''
+    const queryIndex = hash.indexOf('?')
+    if (queryIndex !== -1) {
+      const queryString = hash.substring(queryIndex + 1)
+      const params = new URLSearchParams(queryString)
+      return params.get('genre')
+    }
+  } catch {
+    // safely ignore
+  }
+  return null
+}

@@ -285,38 +285,34 @@
 
 .genre-chips-container {
   width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
   margin-bottom: var(--space-8);
   padding: var(--space-1) 0;
 }
 
-.genre-chips-container::-webkit-scrollbar {
-  display: none;
-}
-
 .genre-chips-track {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   gap: var(--space-2);
-  min-width: min-content;
+  width: 100%;
 }
 
 .genre-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.45rem 1.15rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.5rem 0.5rem;
   background-color: #d8dcf8;
   color: #1e1d24;
   border: 1px solid transparent;
   border-radius: var(--radius-xs);
   font-family: var(--font-roman, var(--font-serif));
-  font-size: clamp(1rem, 1.15vw, 1.15rem);
+  font-size: clamp(0.88rem, 1.05vw, 1.12rem);
   font-weight: 400;
   cursor: pointer;
   white-space: nowrap;
+  text-align: center;
   transition: all var(--transition-fast);
   user-select: none;
 }
@@ -326,10 +322,42 @@
   transform: translateY(-1px);
 }
 
+.genre-chip:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 .genre-chip.active {
   background-color: var(--color-primary);
   color: var(--color-text-inverse);
   box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 680px) {
+  .genre-chips-container {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .genre-chips-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .genre-chips-track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: min-content;
+    width: auto;
+  }
+
+  .genre-chip {
+    flex-shrink: 0;
+    width: auto;
+    padding: 0.45rem 1.15rem;
+    font-size: 1rem;
+  }
 }
 
 /* ==========================================================================
@@ -337,6 +365,7 @@
    ========================================================================== */
 
 .book-carousel-container {
+  --book-card-gap: clamp(1rem, 1.8vw, 1.5rem);
   width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
@@ -352,8 +381,56 @@
 .book-carousel-track {
   display: flex;
   align-items: stretch;
-  gap: clamp(1rem, 1.8vw, 1.5rem);
+  gap: var(--book-card-gap, clamp(1rem, 1.8vw, 1.5rem));
   min-width: min-content;
+}
+
+/* Continuous Moving Marquee Mode (Trending now) */
+.book-carousel-container.marquee-mode {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: var(--book-card-gap, clamp(1rem, 1.8vw, 1.5rem));
+}
+
+.book-carousel-track.marquee-track {
+  flex-shrink: 0;
+  gap: var(--book-card-gap, clamp(1rem, 1.8vw, 1.5rem));
+  animation: trendingMarquee 48s linear infinite;
+  will-change: transform;
+}
+
+@keyframes trendingMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - var(--book-card-gap, clamp(1rem, 1.8vw, 1.5rem))));
+  }
+}
+
+/* Pause marquee on hover, active touch, or keyboard focus */
+.book-carousel-container.marquee-mode:hover .marquee-track,
+.book-carousel-container.marquee-mode:active .marquee-track,
+.book-carousel-container.marquee-mode:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Accessibility: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .book-carousel-container.marquee-mode {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .book-carousel-track.marquee-track {
+    animation: none !important;
+  }
+
+  .book-carousel-track.marquee-track[aria-hidden='true'] {
+    display: none !important;
+  }
 }
 
 .discover-book-card {
