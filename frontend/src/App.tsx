@@ -6,6 +6,9 @@ import { DiscoverPage } from './pages/Discover'
 import { RecommendedPage } from './pages/Recommended'
 import { GenresPage } from './pages/Genres'
 import { HomePage } from './pages/Home'
+import { InsightsPage } from './pages/Insights'
+import { LibraryPage } from './pages/Library'
+import { ProfilePage } from './pages/Profile'
 import { AppLayout } from './layouts/AppLayout'
 import type { NavItemKey } from './components/layout/Navbar'
 import type { OnboardingAnswers } from './types/onboarding'
@@ -181,89 +184,46 @@ function App() {
     )
   }
 
-  // --- Authenticated App Shell: Placeholder Views (Insights, Library, Profile) ---
+  // --- Authenticated App Shell: Insights Page ---
 
-  const isPlaceholderAuthView = ['insights', 'library', 'profile'].includes(currentView)
-  if (isPlaceholderAuthView) {
-    const placeholderContent: Record<
-      string,
-      { title: string; subtitle: string; description: string }
-    > = {
-      insights: {
-        title: 'Literary Insights',
-        subtitle: 'Patterns, Themes & Emotional Journey',
-        description:
-          'Reading statistics, mood analytics, and reflection journals will be available here soon.',
-      },
-      library: {
-        title: 'My Library',
-        subtitle: 'Bookshelf & Reading Vault',
-        description:
-          'Track your current reads, organize thematic bookshelves, and review notes in Phase 5.',
-      },
-      profile: {
-        title: 'Reader Profile',
-        subtitle: 'Personalized Reading DNA',
-        description:
-          'Configure reading pace goals, aesthetic themes, and account preferences.',
-      },
-    }
-
-    const currentInfo = placeholderContent[currentView] || placeholderContent.insights
-
+  if (currentView === 'insights') {
     return (
       <AppLayout
-        activeNav={currentView as NavItemKey}
+        activeNav="insights"
         onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
       >
-        <div className="placeholder-page-card">
-          <h1
-            style={{
-              fontFamily: 'var(--font-roman, var(--font-serif))',
-              fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
-              fontWeight: 400,
-              color: 'var(--color-text-primary)',
-              marginBottom: 'var(--space-2)',
-            }}
-          >
-            {currentInfo.title}
-          </h1>
+        <InsightsPage
+          onNavigate={(view) => navigateTo(view as AppView)}
+        />
+      </AppLayout>
+    )
+  }
 
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'var(--text-sm)',
-              fontWeight: 600,
-              color: 'var(--color-primary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              marginBottom: 'var(--space-4)',
-            }}
-          >
-            {currentInfo.subtitle}
-          </p>
+  // --- Authenticated App Shell: My Library Page ---
 
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'var(--text-base)',
-              color: 'var(--color-text-secondary)',
-              maxWidth: '480px',
-              margin: '0 auto var(--space-6)',
-              lineHeight: 1.6,
-            }}
-          >
-            {currentInfo.description}
-          </p>
+  if (currentView === 'library') {
+    return (
+      <AppLayout
+        activeNav="library"
+        onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
+      >
+        <LibraryPage />
+      </AppLayout>
+    )
+  }
 
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => navigateTo('discover')}
-          >
-            Explore Discover Page
-          </button>
-        </div>
+  // --- Authenticated App Shell: Profile Page ---
+
+  if (currentView === 'profile') {
+    return (
+      <AppLayout
+        activeNav="profile"
+        onNavigate={(key: NavItemKey) => navigateTo(key as AppView)}
+      >
+        <ProfilePage
+          onNavigateToInsights={() => navigateTo('insights')}
+          onSignOut={() => navigateTo('signin')}
+        />
       </AppLayout>
     )
   }

@@ -2,8 +2,9 @@ import React from 'react'
 import type { AppView } from '../../App'
 import { HOME_MOCK_DATA, type HomeData, type HomeRecommendedBookData } from '../../types/home'
 import { SectionHeader } from '../../components/common/SectionHeader'
+import { getTimeBasedGreeting } from '../../utils'
 import {
-  MoodPrompt,
+  MoodSearch,
   ContinueReadingCard,
   HomeBookCard,
   ReadingReason,
@@ -16,6 +17,7 @@ export interface HomePageProps {
   data?: HomeData
   onNavigate?: (view: AppView) => void
   onBookSelect?: (book: HomeRecommendedBookData) => void
+  onMoodSearch?: (query: string) => void
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
@@ -23,6 +25,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   data = HOME_MOCK_DATA,
   onNavigate,
   onBookSelect,
+  onMoodSearch,
 }) => {
   const handleNavigate = (view: AppView) => {
     if (onNavigate) {
@@ -40,20 +43,29 @@ export const HomePage: React.FC<HomePageProps> = ({
     }
   }
 
+  const handleMoodSearch = (query: string) => {
+    if (onMoodSearch) {
+      onMoodSearch(query)
+    } else {
+      // Future AI recommendation service integration point
+      console.info('[Verba AI Mood Search] Ready to query AI engine with:', query)
+    }
+  }
+
   return (
     <div className="home-page">
       {/* 1. Personalized Greeting Header */}
       <header className="home-greeting-section">
         <h1 className="home-greeting-title">
-          Good morning, <span className="home-greeting-name">{userName}.</span>
+          {getTimeBasedGreeting()}, <span className="home-greeting-name">{userName}.</span>
         </h1>
         <p className="home-greeting-subtitle">
           {data.user.subtitle || 'A little time for yourself, and perhaps a good book.'}
         </p>
       </header>
 
-      {/* 2. Mood / Intent Prompt */}
-      <MoodPrompt onExploreMood={() => handleNavigate('discover')} />
+      {/* 2. Mood / AI Search Prompt */}
+      <MoodSearch onSearch={handleMoodSearch} />
 
       {/* 3. Continue Reading */}
       <section className="home-section" aria-labelledby="continue-reading-heading">

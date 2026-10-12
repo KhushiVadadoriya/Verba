@@ -1,6 +1,9 @@
 export { MoodPrompt } from './MoodPrompt'
 export type { MoodPromptProps } from './MoodPrompt'
 
+export { MoodSearch } from './MoodSearch'
+export type { MoodSearchProps } from './MoodSearch'
+
 export { ContinueReadingCard } from './ContinueReadingCard'
 export type { ContinueReadingCardProps } from './ContinueReadingCard'
 
