@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
 import { AuthLayout } from './AuthLayout'
 import { Input } from '../../components/common/Input'
+import { supabase } from '../../services/supabase'
 
 export interface SignInPageProps {
   onNavigateToSignUp?: () => void
@@ -19,6 +20,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({})
   const [isLoading, setIsLoading] = useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const [forgotPasswordNotice, setForgotPasswordNotice] = useState(false)
 
   const validateForm = (): boolean => {
@@ -58,12 +60,28 @@ export const SignInPage: React.FC<SignInPageProps> = ({
     }, 1200)
   }
 
-  const handleGoogleSignIn = () => {
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-      onSignInSuccess?.()
-    }, 1200)
+  const handleGoogleSignIn = async () => {
+    setErrors({})
+    setForgotPasswordNotice(false)
+    setIsGoogleLoading(true)
+    try {
+      sessionStorage.setItem('verba_auth_intent', 'discover')
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin,
+        },
+      })
+      if (error) {
+        sessionStorage.removeItem('verba_auth_intent')
+        setErrors({ general: error.message || 'Google sign-in failed.' })
+        setIsGoogleLoading(false)
+      }
+    } catch (err: any) {
+      sessionStorage.removeItem('verba_auth_intent')
+      setErrors({ general: err?.message || 'An unexpected error occurred.' })
+      setIsGoogleLoading(false)
+    }
   }
 
   return (
@@ -116,7 +134,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
       <button
         type="button"
         onClick={handleGoogleSignIn}
-        disabled={isLoading}
+        disabled={isLoading || isGoogleLoading}
         style={{
           width: '100%',
           display: 'flex',
@@ -131,36 +149,51 @@ export const SignInPage: React.FC<SignInPageProps> = ({
           fontFamily: 'var(--font-serif)',
           fontSize: 'var(--text-lg)',
           boxShadow: 'var(--shadow-sm)',
-          cursor: isLoading ? 'not-allowed' : 'pointer',
+          cursor: isLoading || isGoogleLoading ? 'not-allowed' : 'pointer',
           transition: 'all 150ms var(--ease-default)',
         }}
         onMouseEnter={(e) => {
-          if (!isLoading) e.currentTarget.style.backgroundColor = '#fafafa'
+          if (!isLoading && !isGoogleLoading) e.currentTarget.style.backgroundColor = '#fafafa'
         }}
         onMouseLeave={(e) => {
-          if (!isLoading) e.currentTarget.style.backgroundColor = '#ffffff'
+          if (!isLoading && !isGoogleLoading) e.currentTarget.style.backgroundColor = '#ffffff'
         }}
       >
-        {/* Google G Logo SVG */}
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            fill="#4285F4"
-            d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
-          />
-          <path
-            fill="#34A853"
-            d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
-          />
-          <path
-            fill="#FBBC05"
-            d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.94 0 12s.45 3.84 1.25 5.42l4.03-3.15z"
-          />
-          <path
-            fill="#EA4335"
-            d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-          />
-        </svg>
-        <span>Google Sign In</span>
+        {isGoogleLoading ? (
+          <>
+            <Loader2
+              size={18}
+              style={{
+                animation: 'spin 1s linear infinite',
+                color: 'var(--color-primary)',
+              }}
+            />
+            <span>Connecting to Google...</span>
+          </>
+        ) : (
+          <>
+            {/* Google G Logo SVG */}
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="#4285F4"
+                d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.94 0 12s.45 3.84 1.25 5.42l4.03-3.15z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+              />
+            </svg>
+            <span>Google Sign In</span>
+          </>
+        )}
       </button>
 
       {/* Decorative Divider Line */}

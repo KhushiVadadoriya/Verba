@@ -1,0 +1,1 @@
+export { supabase, isSupabaseConfigured, getSupabaseDiagnostics } from './client'
